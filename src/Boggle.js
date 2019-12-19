@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Row, Col, Spin } from 'antd';
-import 'antd/dist/antd.css';
+import { Row, Col, Spin,PageHeader, Layout } from 'antd';
 import { checkDictionary } from 'src/services/dictionaryServices';
 import * as constants from 'src/constants';
 
+import 'antd/dist/antd.css';
+import 'src/App.css';
 export default class Boggle extends Component {
 	state = {
 		isLoading: false,
@@ -57,15 +58,19 @@ export default class Boggle extends Component {
 		this.generateLetters(constants.NUMBER_OF_FACES);
 	}
 	render() {
-		if (this.state.isLoading) {
-			return <Spin />;
-		}
 		return (
-			<Row gutter={[16, 16]}>
-				<Col span={4}></Col>
-				<Col span={16}></Col>
-				<Col span={4}></Col>
-			</Row>
+      <Layout>
+        <PageHeader>Boggle Game</PageHeader>
+        <Layout>
+				<Row gutter={[16, 16]}>
+					<Col span={4}></Col>
+					<Col span={16}>
+						<Spin size="large" spinning={this.state.isLoading}/>
+					</Col>
+					<Col span={4}></Col>
+				</Row>
+        </Layout>
+      </Layout>
 		);
 	}
 }
