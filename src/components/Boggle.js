@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Spin, PageHeader, Layout } from 'antd';
+import { Row, Col, Spin, PageHeader, Layout, Button } from 'antd';
 import { Github } from 'react-social-github';
 
 import { checkDictionary } from 'src/services/dictionaryServices';
@@ -89,7 +89,7 @@ export default class Boggle extends Component {
 						<Col span={8}>
 							<input type="text" value={this.state.currentWord} disabled />
 							{!this.state.isCurrentWordValid && <div>Invalid word</div>}
-							<button onClick={this.resetWord}>Reset</button>
+							<Button type="primary" onClick={this.resetWord}>Reset</Button>
 						</Col>
 						<Col span={6} align="middle">
 							<div className="grid">
@@ -103,9 +103,9 @@ export default class Boggle extends Component {
 									</div>
 								))}
 							</div>
-							<button onClick={this.checkWord} className="word-submit">
+							<Button type="primary" onClick={this.checkWord} className="word-submit">
 								It is a word
-							</button>
+							</Button>
 						</Col>
 						<Col span={4}>
 							<div>Scores</div>
