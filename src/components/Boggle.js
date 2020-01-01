@@ -5,9 +5,11 @@ import {
   Spin,
   PageHeader,
   Layout,
-  Button
+  Button,
+  Modal
 } from 'antd';
 import {Github} from 'react-social-github';
+import {CountdownCircleTimer} from 'react-countdown-circle-timer';
 
 import {checkDictionary} from 'src/services/dictionaryServices';
 import * as constants from 'src/constants';
@@ -22,7 +24,9 @@ export default class Boggle extends Component {
     isCurrentWordValid: false,
     currentWord: '',
     randomLetters: [],
-    status: ''
+    status: '',
+    isTimeUp: false,
+    isModalOpen: false
   };
 
   isLoading = isLoading => {
@@ -30,6 +34,9 @@ export default class Boggle extends Component {
   };
 
   checkWord = async() => {
+    if (this.state.isTimeUp) {
+      return
+    }
     this.isLoading(true);
     try {
       const response = await checkDictionary(this.state.currentWord);
@@ -83,6 +90,9 @@ export default class Boggle extends Component {
   };
 
   saveCurrentLetter = key => {
+    if (this.state.isTimeUp) {
+      return
+    }
     this.setState({
       currentWord: this
         .state
@@ -120,6 +130,33 @@ export default class Boggle extends Component {
     }
   }
 
+  endGame = () => {
+    this.setState({
+      isTimeUp: true,
+      isModalOpen: true
+    });
+    this.componentWillUnmount();
+  }
+
+  closeModal = () => {
+    this.setState({
+      isModalOpen: false
+    })
+  }
+
+  renderTime = value => {
+    if (value === 0) {
+      return <div className="timer">Too late...</div>;
+    }
+
+    return (
+      <div className="timer">
+        <div className="text">Remaining</div>
+        <div className="value">{value}</div>
+        <div className="text">seconds</div>
+      </div>
+    );
+  };
   componentDidMount() {
     this.generateLetters(constants.NUMBER_OF_FACES);
     document.addEventListener('keydown', this.doBackspace, false);
@@ -155,6 +192,21 @@ export default class Boggle extends Component {
                     ))}
                 </ul>
               </div>
+              <CountdownCircleTimer
+                isPlaying
+                durationSeconds={10}
+                renderTime={this.renderTime}
+                onComplete={()=> this.endGame()}
+                colors={[
+                [
+                  '#004777', .33
+                ],
+                [
+                  '#F7B801', .33
+                ],
+                ['#A30000']
+              ]}/>
+
             </Col>
             <Col span={6} align="middle">
               <div className="pd-20">
@@ -198,6 +250,14 @@ export default class Boggle extends Component {
               <Github user="sbimochan" repo="boggle"></Github>
             </Col>
           </Row>
+          <Modal
+          title="Game Over"
+          visible={this.state.isModalOpen}
+          onOk={this.closeModal}
+          onCancel={this.closeModal}
+        >
+          <p>Your score is <strong>{this.state.score}</strong></p>
+        </Modal>
         </Layout.Content>
       </Layout>
     );
