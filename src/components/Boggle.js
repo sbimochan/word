@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Spin, PageHeader, Layout, Button, Content } from 'antd';
+import { Row, Col, Spin, PageHeader, Layout, Button } from 'antd';
 import { Github } from 'react-social-github';
 
 import { checkDictionary } from 'src/services/dictionaryServices';
