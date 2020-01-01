@@ -5,7 +5,8 @@ import {
   Spin,
   PageHeader,
   Layout,
-  Button
+  Button,
+  Modal
 } from 'antd';
 import {Github} from 'react-social-github';
 import {CountdownCircleTimer} from 'react-countdown-circle-timer';
@@ -24,7 +25,8 @@ export default class Boggle extends Component {
     currentWord: '',
     randomLetters: [],
     status: '',
-    isTimeUp: false
+    isTimeUp: false,
+    isModalOpen: false
   };
 
   isLoading = isLoading => {
@@ -130,9 +132,16 @@ export default class Boggle extends Component {
 
   endGame = () => {
     this.setState({
-      isTimeUp: true
+      isTimeUp: true,
+      isModalOpen: true
     });
     this.componentWillUnmount();
+  }
+
+  closeModal = () => {
+    this.setState({
+      isModalOpen: false
+    })
   }
 
   renderTime = value => {
@@ -185,7 +194,7 @@ export default class Boggle extends Component {
               </div>
               <CountdownCircleTimer
                 isPlaying
-                durationSeconds={180}
+                durationSeconds={10}
                 renderTime={this.renderTime}
                 onComplete={()=> this.endGame()}
                 colors={[
@@ -241,6 +250,14 @@ export default class Boggle extends Component {
               <Github user="sbimochan" repo="boggle"></Github>
             </Col>
           </Row>
+          <Modal
+          title="Game Over"
+          visible={this.state.isModalOpen}
+          onOk={this.closeModal}
+          onCancel={this.closeModal}
+        >
+          <p>Your score is <strong>{this.state.score}</strong></p>
+        </Modal>
         </Layout.Content>
       </Layout>
     );
