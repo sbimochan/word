@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Spin, PageHeader, Layout } from 'antd';
+import { Github } from 'react-social-github';
+
 import { checkDictionary } from 'src/services/dictionaryServices';
 import * as constants from 'src/constants';
 
@@ -37,7 +39,7 @@ export default class Boggle extends Component {
 			this.setState({
 				score: this.state.score + this.state.currentWord.length,
 				currentWord: ''
-			})
+			});
 		}
 		this.isLoading(false);
 	};
@@ -51,7 +53,9 @@ export default class Boggle extends Component {
 		let charactersLength = characters.length;
 		this.isLoading(true);
 		while (result.size < length) {
-			result.add(characters.charAt(Math.floor(Math.random() * charactersLength)));
+			result.add(
+				characters.charAt(Math.floor(Math.random() * charactersLength))
+			);
 		}
 		this.setState({
 			randomLetters: [...result] //Converting Set to array
@@ -69,8 +73,8 @@ export default class Boggle extends Component {
 	resetWord = () => {
 		this.setState({
 			currentWord: ''
-		})
-	}
+		});
+	};
 
 	componentDidMount() {
 		this.generateLetters(constants.NUMBER_OF_FACES);
@@ -90,15 +94,26 @@ export default class Boggle extends Component {
 						<Col span={6} align="middle">
 							<div className="grid">
 								{this.state.randomLetters.map((letter, index) => (
-									<div key={index} className="cell" onClick={this.saveCurrentLetter}>{letter}</div>
+									<div
+										key={index}
+										className="cell"
+										onClick={this.saveCurrentLetter}
+									>
+										{letter}
+									</div>
 								))}
 							</div>
-							<button onClick={this.checkWord} className="word-submit">It is a word</button>
+							<button onClick={this.checkWord} className="word-submit">
+								It is a word
+							</button>
 						</Col>
-						<Col span={8}>
-						<div>Scores</div>
+						<Col span={4}>
+							<div>Scores</div>
 							<Spin size="large" spinning={this.state.isLoading} />
-						<div>{this.state.score}</div>
+							<div>{this.state.score}</div>
+						</Col>
+						<Col span={4}>
+							<Github user="sbimochan" repo="boggle"></Github>
 						</Col>
 					</Row>
 				</Layout>
