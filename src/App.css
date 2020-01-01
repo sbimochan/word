@@ -12,3 +12,23 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
+.grid {
+  display: grid;
+  grid-gap: 1px;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.grid > div {
+  padding: 15px;
+  background-color: #ccc;
+}
+
+.cell {
+  cursor: pointer;
+  border-radius: 15%
+}
+
+.cell:active {
+  background: goldenrod
+}
