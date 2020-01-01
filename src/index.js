@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
-import Boggle from './Boggle';
+import Boggle from 'src/components/Boggle';
 
 ReactDOM.render(<Boggle />, document.getElementById('root'));
 

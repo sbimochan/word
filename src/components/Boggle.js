@@ -32,7 +32,6 @@ export default class Boggle extends Component {
 		} catch (error) {
 			console.log('Something went wrong');
 		}
-		this.isLoading(false);
 		if (this.state.isCurrentWordValid) {
 			this.setState({
 				score: this.state.score + this.state.currentWord.length
@@ -41,23 +40,22 @@ export default class Boggle extends Component {
 		this.setState({
 			currentWord: ''
 		})
+		this.isLoading(false);
 	};
 
 	/**
 	 * Credit: https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
 	 */
 	generateLetters = length => {
-		let result = [];
+		let result = new Set();
 		let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 		let charactersLength = characters.length;
 		this.isLoading(true);
-		for (let i = 0; i < length; i++) {
-			result.push(
-				characters.charAt(Math.floor(Math.random() * charactersLength))
-			);
+		while (result.size < length) {
+			result.add(characters.charAt(Math.floor(Math.random() * charactersLength)));
 		}
 		this.setState({
-			randomLetters: result
+			randomLetters: [...result] //Converting Set to array
 		});
 		this.isLoading(false);
 	};
