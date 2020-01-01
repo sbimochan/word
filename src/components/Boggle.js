@@ -82,22 +82,22 @@ export default class Boggle extends Component {
 		});
 	};
 
-	doBackspace = (event) => {
+	doBackspace = event => {
 		if (event.keyCode === constants.BACKSPACE_KEYCODE) {
 			this.setState({
 				currentWord: this.state.currentWord.slice(0, -1)
-			})
+			});
 		}
-	}
+	};
 
 	componentDidMount() {
 		this.generateLetters(constants.NUMBER_OF_FACES);
 		document.addEventListener('keydown', this.doBackspace, false);
 	}
 
-	componentWillUnmount(){
-    document.removeEventListener('keydown', this.doBackspace, false);
-  }
+	componentWillUnmount() {
+		document.removeEventListener('keydown', this.doBackspace, false);
+	}
 
 	render() {
 		return (
@@ -111,7 +111,11 @@ export default class Boggle extends Component {
 						<Col span={6} align="middle">
 							<div className="pd-20">
 								<input type="text" value={this.state.currentWord} disabled />
-								<Button type="primary" className="md-20" onClick={this.resetWord}>
+								<Button
+									type="primary"
+									className="md-20"
+									onClick={this.resetWord}
+								>
 									Reset
 								</Button>
 							</div>
