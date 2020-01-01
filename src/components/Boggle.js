@@ -33,12 +33,18 @@ export default class Boggle extends Component {
 				isCurrentWordValid: responseData.isValidWord
 			});
 		} catch (error) {
-			console.log('Something went wrong');
+			this.setState({
+				status: 'Something wrong with server.'
+			});
 		}
 		if (this.state.isCurrentWordValid) {
 			this.setState({
 				score: this.state.score + this.state.currentWord.length,
 				currentWord: ''
+			});
+		} else {
+			this.setState({
+				status: 'Invalid word'
 			});
 		}
 		this.isLoading(false);
@@ -85,10 +91,10 @@ export default class Boggle extends Component {
 			<Layout>
 				<PageHeader>Boggle Game</PageHeader>
 				<Layout>
-					<Row gutter={[16, 16]}>
+					<Row gutter={[36, 36]}>
 						<Col span={8}>
 							<input type="text" value={this.state.currentWord} disabled />
-							{!this.state.isCurrentWordValid && <div>Invalid word</div>}
+							<div className="message-block">{this.state.status}</div>
 							<Button type="primary" onClick={this.resetWord}>Reset</Button>
 						</Col>
 						<Col span={6} align="middle">
