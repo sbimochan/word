@@ -23,7 +23,8 @@ export default class Boggle extends Component {
     isCurrentWordValid: false,
     currentWord: '',
     randomLetters: [],
-    status: ''
+    status: '',
+    isTimeUp: false
   };
 
   isLoading = isLoading => {
@@ -31,6 +32,9 @@ export default class Boggle extends Component {
   };
 
   checkWord = async() => {
+    if (this.state.isTimeUp) {
+      return
+    }
     this.isLoading(true);
     try {
       const response = await checkDictionary(this.state.currentWord);
@@ -122,7 +126,9 @@ export default class Boggle extends Component {
   }
 
   endGame = () => {
-    console.log('end')
+    this.setState({
+      isTimeUp: true
+    })
   }
 
   renderTime = value => {
