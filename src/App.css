@@ -36,3 +36,15 @@
 .word-submit {
   margin-top: 20px;
 }
+.message-block{
+  color: crimson;
+  font-weight: 600;
+  font-size: 16px;
+}
+.pd-20{
+  padding: 20px;
+}
+
+.md-20{
+  margin:20px;
+}

@@ -93,9 +93,11 @@ export default class Boggle extends Component {
 				<Layout>
 					<Row gutter={[36, 36]}>
 						<Col span={8}>
+						<div className="pd-20">
 							<input type="text" value={this.state.currentWord} disabled />
+							</div>
+							<Button type="primary" className="md-20" onClick={this.resetWord}>Reset</Button>
 							<div className="message-block">{this.state.status}</div>
-							<Button type="primary" onClick={this.resetWord}>Reset</Button>
 						</Col>
 						<Col span={6} align="middle">
 							<div className="grid">
