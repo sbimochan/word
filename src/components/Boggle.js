@@ -70,7 +70,7 @@ export default class Boggle extends Component {
 	 */
 	generateLetters = length => {
 		let result = new Set();
-		let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		let characters = 'abcdefghijklmnopqrstuvwxyz';
 		let charactersLength = characters.length;
 		this.isLoading(true);
 		while (result.size < length) {
@@ -84,10 +84,9 @@ export default class Boggle extends Component {
 		this.isLoading(false);
 	};
 
-	saveCurrentLetter = event => {
-		event.stopPropagation();
+	saveCurrentLetter = key => {
 		this.setState({
-			currentWord: this.state.currentWord.concat(event.target.innerText)
+			currentWord: this.state.currentWord.concat(key)
 		});
 	};
 
@@ -98,12 +97,26 @@ export default class Boggle extends Component {
 	};
 
 	doBackspace = event => {
-		if (event.keyCode === constants.BACKSPACE_KEYCODE) {
-			this.setState({
-				currentWord: this.state.currentWord.slice(0, -1)
-			});
+		switch (event.keyCode) {
+			case constants.BACKSPACE_KEYCODE:
+				this.setState({
+					currentWord: this.state.currentWord.slice(0, -1)
+				});
+				break;
+			case constants.ENTER_KEYCODE:
+				this.checkWord();
+				break;
+			default:
+				break;
 		}
+		this.handleShortcutKeys(event.key);
 	};
+
+	handleShortcutKeys = key => {
+		if (this.state.randomLetters.includes(key)) {
+			this.saveCurrentLetter(key);
+		}
+	}
 
 	componentDidMount() {
 		this.generateLetters(constants.NUMBER_OF_FACES);
@@ -153,7 +166,7 @@ export default class Boggle extends Component {
 									<div
 										key={index}
 										className="cell"
-										onClick={this.saveCurrentLetter}
+										onClick={(e) => this.saveCurrentLetter(e.target.innerText)}
 									>
 										{letter}
 									</div>
