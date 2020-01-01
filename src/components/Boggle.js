@@ -88,6 +88,9 @@ export default class Boggle extends Component {
   };
 
   saveCurrentLetter = key => {
+    if (this.state.isTimeUp) {
+      return
+    }
     this.setState({
       currentWord: this
         .state
@@ -128,7 +131,8 @@ export default class Boggle extends Component {
   endGame = () => {
     this.setState({
       isTimeUp: true
-    })
+    });
+    this.componentWillUnmount();
   }
 
   renderTime = value => {
