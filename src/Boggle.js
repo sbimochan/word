@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Spin,PageHeader, Layout } from 'antd';
+import { Row, Col, Spin, PageHeader, Layout } from 'antd';
 import { checkDictionary } from 'src/services/dictionaryServices';
 import * as constants from 'src/constants';
 
@@ -33,6 +33,14 @@ export default class Boggle extends Component {
 			console.log('Something went wrong');
 		}
 		this.isLoading(false);
+		if (this.state.isCurrentWordValid) {
+			this.setState({
+				score: this.state.score + this.state.currentWord.length
+			})
+		}
+		this.setState({
+			currentWord: ''
+		})
 	};
 
 	/**
@@ -54,23 +62,42 @@ export default class Boggle extends Component {
 		this.isLoading(false);
 	};
 
+	saveCurrentLetter = event => {
+		event.stopPropagation();
+		this.setState({
+			currentWord: this.state.currentWord.concat(event.target.innerText)
+		});
+	};
+
 	componentDidMount() {
 		this.generateLetters(constants.NUMBER_OF_FACES);
 	}
 	render() {
 		return (
-      <Layout>
-        <PageHeader>Boggle Game</PageHeader>
-        <Layout>
-				<Row gutter={[16, 16]}>
-					<Col span={4}></Col>
-					<Col span={16}>
-						<Spin size="large" spinning={this.state.isLoading}/>
-					</Col>
-					<Col span={4}></Col>
-				</Row>
-        </Layout>
-      </Layout>
+			<Layout>
+				<PageHeader>Boggle Game</PageHeader>
+				<Layout>
+					<Row gutter={[16, 16]}>
+						<Col span={8}>
+							<input type="text" value={this.state.currentWord} disabled />
+							{!this.state.isCurrentWordValid && <div>Invalid word</div>}
+						</Col>
+						<Col span={6} align="middle">
+							<div className="grid">
+								{this.state.randomLetters.map((letter, index) => (
+									<div key={index} className="cell" onClick={this.saveCurrentLetter}>{letter}</div>
+								))}
+							</div>
+							<button onClick={this.checkWord}>It is a word</button>
+						</Col>
+						<Col span={8}>
+						<div>Scores</div>
+							<Spin size="large" spinning={this.state.isLoading} />
+						<div>{this.state.score}</div>
+						</Col>
+					</Row>
+				</Layout>
+			</Layout>
 		);
 	}
 }
