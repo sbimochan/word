@@ -6,7 +6,7 @@ Boggle is a word game invented by Allan Turoff and originally distributed by Par
 
 ### Word checker
 
-Visit my another repo that checks for valid words.
+This application uses another repo that checks for valid words.
 [word-finder](https://github.com/sbimochan/word-finder)
 
 Visit this [link](https://sbimochan.github.io/boggle) to play this game. [In progress] 🚧
