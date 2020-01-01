@@ -15,12 +15,14 @@
 
 .grid {
   display: grid;
-  grid-gap: 1px;
+  grid-gap: 3px;
   grid-template-columns: repeat(4, 1fr);
 }
 
 .grid > div {
   padding: 15px;
+  font-size: 16px;
+  font-weight: bold;
   background-color: #ccc;
 }
 
@@ -30,7 +32,7 @@
 }
 
 .cell:active {
-  background: goldenrod
+  background: cornflowerblue;
 }
 
 .word-submit {
@@ -53,4 +55,8 @@
 .score {
   font-size: 25px;
   color: dimgray;
+}
+
+.valid-word-list {
+  color: royalblue
 }

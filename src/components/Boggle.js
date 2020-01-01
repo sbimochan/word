@@ -38,16 +38,31 @@ export default class Boggle extends Component {
 			});
 		}
 		if (this.state.isCurrentWordValid) {
-			this.setState({
-				score: this.state.score + this.state.currentWord.length,
-				currentWord: ''
-			});
+			this.collectWords();
 		} else {
 			this.setState({
 				status: 'Invalid word'
 			});
 		}
 		this.isLoading(false);
+		this.resetWord();
+	};
+
+	/**
+	 * Prevent repetitions
+	 */
+	collectWords = () => {
+		if (!this.state.validWords.includes(this.state.currentWord)) {
+			this.setState({
+				validWords: [...this.state.validWords, this.state.currentWord],
+				score: this.state.score + this.state.currentWord.length,
+				status: ''
+			});
+		} else {
+			this.setState({
+				status: 'You tried same twice. I got you!'
+			});
+		}
 	};
 
 	/**
@@ -109,10 +124,18 @@ export default class Boggle extends Component {
 						src: 'https://avatars1.githubusercontent.com/u/8186664?s=460&v=4'
 					}}
 				/>
-				<Layout.Content>
+				<Layout.Content style={{ height: '100vh' }}>
 					<Row gutter={[36, 36]} className="pd-20">
 						<Col span={8}>
+							<h2>Status</h2>
 							<div className="message-block pd-20">{this.state.status}</div>
+							<div className="valid-word-list pd-20">
+								<ul>
+									{this.state.validWords.map(word => (
+										<li>{word}</li>
+									))}
+								</ul>
+							</div>
 						</Col>
 						<Col span={6} align="middle">
 							<div className="pd-20">
@@ -148,8 +171,18 @@ export default class Boggle extends Component {
 							</div>
 						</Col>
 						<Col span={4}>
-							<div>Scores</div>
+							<h2>Scores</h2>
 							<div className="score">{this.state.score}</div>
+							<div>
+								<Button
+									type="primary"
+									onClick={() =>
+										this.generateLetters(constants.NUMBER_OF_FACES)
+									}
+								>
+									Shuffle boggle
+								</Button>
+							</div>
 						</Col>
 						<Col span={4}>
 							<Github user="sbimochan" repo="boggle"></Github>
