@@ -194,7 +194,7 @@ export default class Boggle extends Component {
               </div>
               <CountdownCircleTimer
                 isPlaying
-                durationSeconds={10}
+                durationSeconds={180}
                 renderTime={this.renderTime}
                 onComplete={()=> this.endGame()}
                 colors={[
