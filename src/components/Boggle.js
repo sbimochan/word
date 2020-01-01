@@ -8,6 +8,7 @@ import {
   Button
 } from 'antd';
 import {Github} from 'react-social-github';
+import {CountdownCircleTimer} from 'react-countdown-circle-timer';
 
 import {checkDictionary} from 'src/services/dictionaryServices';
 import * as constants from 'src/constants';
@@ -120,6 +121,23 @@ export default class Boggle extends Component {
     }
   }
 
+  endGame = () => {
+    console.log('end')
+  }
+
+  renderTime = value => {
+    if (value === 0) {
+      return <div className="timer">Too late...</div>;
+    }
+
+    return (
+      <div className="timer">
+        <div className="text">Remaining</div>
+        <div className="value">{value}</div>
+        <div className="text">seconds</div>
+      </div>
+    );
+  };
   componentDidMount() {
     this.generateLetters(constants.NUMBER_OF_FACES);
     document.addEventListener('keydown', this.doBackspace, false);
@@ -155,6 +173,21 @@ export default class Boggle extends Component {
                     ))}
                 </ul>
               </div>
+              <CountdownCircleTimer
+                isPlaying
+                durationSeconds={180}
+                renderTime={this.renderTime}
+                onComplete={()=> this.endGame()}
+                colors={[
+                [
+                  '#004777', .33
+                ],
+                [
+                  '#F7B801', .33
+                ],
+                ['#A30000']
+              ]}/>
+
             </Col>
             <Col span={6} align="middle">
               <div className="pd-20">
