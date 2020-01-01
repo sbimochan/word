@@ -12,7 +12,8 @@ export default class Boggle extends Component {
 		validWords: [],
 		isCurrentWordValid: false,
 		currentWord: '',
-		randomLetters: []
+		randomLetters: [],
+		status: ''
 	};
 
 	isLoading = isLoading => {
@@ -34,12 +35,10 @@ export default class Boggle extends Component {
 		}
 		if (this.state.isCurrentWordValid) {
 			this.setState({
-				score: this.state.score + this.state.currentWord.length
+				score: this.state.score + this.state.currentWord.length,
+				currentWord: ''
 			})
 		}
-		this.setState({
-			currentWord: ''
-		})
 		this.isLoading(false);
 	};
 
@@ -67,9 +66,16 @@ export default class Boggle extends Component {
 		});
 	};
 
+	resetWord = () => {
+		this.setState({
+			currentWord: ''
+		})
+	}
+
 	componentDidMount() {
 		this.generateLetters(constants.NUMBER_OF_FACES);
 	}
+
 	render() {
 		return (
 			<Layout>
@@ -79,6 +85,7 @@ export default class Boggle extends Component {
 						<Col span={8}>
 							<input type="text" value={this.state.currentWord} disabled />
 							{!this.state.isCurrentWordValid && <div>Invalid word</div>}
+							<button onClick={this.resetWord}>Reset</button>
 						</Col>
 						<Col span={6} align="middle">
 							<div className="grid">
@@ -86,7 +93,7 @@ export default class Boggle extends Component {
 									<div key={index} className="cell" onClick={this.saveCurrentLetter}>{letter}</div>
 								))}
 							</div>
-							<button onClick={this.checkWord}>It is a word</button>
+							<button onClick={this.checkWord} className="word-submit">It is a word</button>
 						</Col>
 						<Col span={8}>
 						<div>Scores</div>
