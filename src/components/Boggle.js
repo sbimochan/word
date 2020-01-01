@@ -1,208 +1,205 @@
-import React, { Component } from 'react';
-import { Row, Col, Spin, PageHeader, Layout, Button } from 'antd';
-import { Github } from 'react-social-github';
+import React, {Component} from 'react';
+import {
+  Row,
+  Col,
+  Spin,
+  PageHeader,
+  Layout,
+  Button
+} from 'antd';
+import {Github} from 'react-social-github';
 
-import { checkDictionary } from 'src/services/dictionaryServices';
+import {checkDictionary} from 'src/services/dictionaryServices';
 import * as constants from 'src/constants';
 
 import 'antd/dist/antd.css';
 import 'src/App.css';
 export default class Boggle extends Component {
-	state = {
-		isLoading: false,
-		score: 0,
-		validWords: [],
-		isCurrentWordValid: false,
-		currentWord: '',
-		randomLetters: [],
-		status: ''
-	};
+  state = {
+    isLoading: false,
+    score: 0,
+    validWords: [],
+    isCurrentWordValid: false,
+    currentWord: '',
+    randomLetters: [],
+    status: ''
+  };
 
-	isLoading = isLoading => {
-		this.setState({
-			isLoading
-		});
-	};
+  isLoading = isLoading => {
+    this.setState({isLoading});
+  };
 
-	checkWord = async () => {
-		this.isLoading(true);
-		try {
-			const response = await checkDictionary(this.state.currentWord);
-			const responseData = (response && response.data) || [];
-			this.setState({
-				isCurrentWordValid: responseData.isValidWord
-			});
-		} catch (error) {
-			this.setState({
-				status: 'Something wrong with server.'
-			});
-		}
-		if (this.state.isCurrentWordValid) {
-			this.collectWords();
-		} else {
-			this.setState({
-				status: 'Invalid word'
-			});
-		}
-		this.isLoading(false);
-		this.resetWord();
-	};
+  checkWord = async() => {
+    this.isLoading(true);
+    try {
+      const response = await checkDictionary(this.state.currentWord);
+      const responseData = (response && response.data) || [];
+      this.setState({isCurrentWordValid: responseData.isValidWord});
+    } catch (error) {
+      this.setState({status: 'Something wrong with server.'});
+    }
+    if (this.state.isCurrentWordValid) {
+      this.collectWords();
+    } else {
+      this.setState({status: 'Invalid word'});
+    }
+    this.isLoading(false);
+    this.resetWord();
+  };
 
-	/**
-	 * Prevent repetitions
-	 */
-	collectWords = () => {
-		if (!this.state.validWords.includes(this.state.currentWord)) {
-			this.setState({
-				validWords: [...this.state.validWords, this.state.currentWord],
-				score: this.state.score + this.state.currentWord.length,
-				status: ''
-			});
-		} else {
-			this.setState({
-				status: 'You tried same twice. I got you!'
-			});
-		}
-	};
+  /**
+     * Prevent repetitions
+     */
+  collectWords = () => {
+    if (!this.state.validWords.includes(this.state.currentWord)) {
+      this.setState({
+        validWords: [
+          ...this.state.validWords,
+          this.state.currentWord
+        ],
+        score: this.state.score + this.state.currentWord.length,
+        status: ''
+      });
+    } else {
+      this.setState({status: 'You tried same twice. I got you!'});
+    }
+  };
 
-	/**
-	 * Credit: https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
-	 */
-	generateLetters = length => {
-		let result = new Set();
-		let characters = 'abcdefghijklmnopqrstuvwxyz';
-		let charactersLength = characters.length;
-		this.isLoading(true);
-		while (result.size < length) {
-			result.add(
-				characters.charAt(Math.floor(Math.random() * charactersLength))
-			);
-		}
-		this.setState({
-			randomLetters: [...result] //Converting Set to array
-		});
-		this.isLoading(false);
-	};
+  /**
+     * Credit: https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
+     */
+  generateLetters = length => {
+    let result = new Set();
+    let characters = 'abcdefghijklmnopqrstuvwxyz';
+    let charactersLength = characters.length;
+    this.isLoading(true);
+    while (result.size < length) {
+      result.add(characters.charAt(Math.floor(Math.random() * charactersLength)));
+    }
+    this.setState({
+      randomLetters: [...result] //Converting Set to array
+    });
+    this.isLoading(false);
+  };
 
-	saveCurrentLetter = key => {
-		this.setState({
-			currentWord: this.state.currentWord.concat(key)
-		});
-	};
+  saveCurrentLetter = key => {
+    this.setState({
+      currentWord: this
+        .state
+        .currentWord
+        .concat(key)
+    });
+  };
 
-	resetWord = () => {
-		this.setState({
-			currentWord: ''
-		});
-	};
+  resetWord = () => {
+    this.setState({currentWord: ''});
+  };
 
-	doBackspace = event => {
-		switch (event.keyCode) {
-			case constants.BACKSPACE_KEYCODE:
-				this.setState({
-					currentWord: this.state.currentWord.slice(0, -1)
-				});
-				break;
-			case constants.ENTER_KEYCODE:
-				this.checkWord();
-				break;
-			default:
-				break;
-		}
-		this.handleShortcutKeys(event.key);
-	};
+  doBackspace = event => {
+    switch (event.keyCode) {
+      case constants.BACKSPACE_KEYCODE:
+        this.setState({
+          currentWord: this
+            .state
+            .currentWord
+            .slice(0, -1)
+        });
+        break;
+      case constants.ENTER_KEYCODE:
+        this.checkWord();
+        break;
+      default:
+        break;
+    }
+    this.handleShortcutKeys(event.key);
+  };
 
-	handleShortcutKeys = key => {
-		if (this.state.randomLetters.includes(key)) {
-			this.saveCurrentLetter(key);
-		}
-	}
+  handleShortcutKeys = key => {
+    if (this.state.randomLetters.includes(key)) {
+      this.saveCurrentLetter(key);
+    }
+  }
 
-	componentDidMount() {
-		this.generateLetters(constants.NUMBER_OF_FACES);
-		document.addEventListener('keydown', this.doBackspace, false);
-	}
+  componentDidMount() {
+    this.generateLetters(constants.NUMBER_OF_FACES);
+    document.addEventListener('keydown', this.doBackspace, false);
+  }
 
-	componentWillUnmount() {
-		document.removeEventListener('keydown', this.doBackspace, false);
-	}
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.doBackspace, false);
+  }
 
-	render() {
-		return (
-			<Layout>
-				<PageHeader
-					title="Boggle Game"
-					ghost={false}
-					avatar={{
-						src: 'https://avatars1.githubusercontent.com/u/8186664?s=460&v=4'
-					}}
-				/>
-				<Layout.Content style={{ height: '100vh' }}>
-					<Row gutter={[36, 36]} className="pd-20">
-						<Col span={8}>
-							<h2>Status</h2>
-							<div className="message-block pd-20">{this.state.status}</div>
-							<div className="valid-word-list pd-20">
-								<ul>
-									{this.state.validWords.map(word => (
-										<li>{word}</li>
-									))}
-								</ul>
-							</div>
-						</Col>
-						<Col span={6} align="middle">
-							<div className="pd-20">
-								<input type="text" value={this.state.currentWord} disabled />
-								<Button
-									type="primary"
-									className="md-20"
-									onClick={this.resetWord}
-								>
-									Reset
-								</Button>
-							</div>
-							<div className="grid">
-								{this.state.randomLetters.map((letter, index) => (
-									<div
-										key={index}
-										className="cell"
-										onClick={(e) => this.saveCurrentLetter(e.target.innerText)}
-									>
-										{letter}
-									</div>
-								))}
-							</div>
-							<Button
-								type="primary"
-								onClick={this.checkWord}
-								className="word-submit"
-							>
-								It is a word
-							</Button>
-							<div>
-								<Spin size="large" spinning={this.state.isLoading} />
-							</div>
-						</Col>
-						<Col span={4}>
-							<h2>Scores</h2>
-							<div className="score">{this.state.score}</div>
-							<div>
-								<Button
-									type="primary"
-									onClick={() =>
-										this.generateLetters(constants.NUMBER_OF_FACES)
-									}
-								>
-									Shuffle boggle
-								</Button>
-							</div>
-						</Col>
-						<Col span={4}>
-							<Github user="sbimochan" repo="boggle"></Github>
-						</Col>
-					</Row>
-				</Layout.Content>
-			</Layout>
-		);
-	}
+  render() {
+    return (
+      <Layout>
+        <PageHeader
+          title="Boggle Game"
+          ghost={false}
+          avatar={{
+          src: 'https://avatars1.githubusercontent.com/u/8186664?s=460&v=4'
+        }}/>
+        <Layout.Content style={{
+          height: '100vh'
+        }}>
+          <Row gutter={[36, 36]} className="pd-20">
+            <Col span={8}>
+              <h2>Status</h2>
+              <div className="message-block pd-20">{this.state.status}</div>
+              <div className="valid-word-list pd-20">
+                <ul>
+                  {this
+                    .state
+                    .validWords
+                    .map(word => (
+                      <li>{word}</li>
+                    ))}
+                </ul>
+              </div>
+            </Col>
+            <Col span={6} align="middle">
+              <div className="pd-20">
+                <input type="text" value={this.state.currentWord} disabled/>
+                <Button type="primary" className="md-20" onClick={this.resetWord}>
+                  Reset
+                </Button>
+              </div>
+              <div className="grid">
+                {this
+                  .state
+                  .randomLetters
+                  .map((letter, index) => (
+                    <div
+                      key={index}
+                      className="cell"
+                      onClick={(e) => this.saveCurrentLetter(e.target.innerText)}>
+                      {letter}
+                    </div>
+                  ))}
+              </div>
+              <Button type="primary" onClick={this.checkWord} className="word-submit">
+                It is a word
+              </Button>
+              <div>
+                <Spin size="large" spinning={this.state.isLoading}/>
+              </div>
+            </Col>
+            <Col span={4}>
+              <h2>Scores</h2>
+              <div className="score">{this.state.score}</div>
+              <div>
+                <Button
+                  type="primary"
+                  onClick={() => this.generateLetters(constants.NUMBER_OF_FACES)}>
+                  Shuffle boggle
+                </Button>
+              </div>
+            </Col>
+            <Col span={4}>
+              <Github user="sbimochan" repo="boggle"></Github>
+            </Col>
+          </Row>
+        </Layout.Content>
+      </Layout>
+    );
+  }
 }
