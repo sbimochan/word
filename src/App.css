@@ -35,6 +35,7 @@
 
 .word-submit {
   margin-top: 20px;
+  margin-bottom: 15px;
 }
 .message-block{
   color: crimson;
@@ -47,4 +48,9 @@
 
 .md-20{
   margin:20px;
+}
+
+.score {
+  font-size: 25px;
+  color: dimgray;
 }

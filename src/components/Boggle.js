@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Spin, PageHeader, Layout, Button } from 'antd';
+import { Row, Col, Spin, PageHeader, Layout, Button, Content } from 'antd';
 import { Github } from 'react-social-github';
 
 import { checkDictionary } from 'src/services/dictionaryServices';
@@ -102,11 +102,17 @@ export default class Boggle extends Component {
 	render() {
 		return (
 			<Layout>
-				<PageHeader>Boggle Game</PageHeader>
-				<Layout>
-					<Row gutter={[36, 36]}>
+				<PageHeader
+					title="Boggle Game"
+					ghost={false}
+					avatar={{
+						src: 'https://avatars1.githubusercontent.com/u/8186664?s=460&v=4'
+					}}
+				/>
+				<Layout.Content>
+					<Row gutter={[36, 36]} className="pd-20">
 						<Col span={8}>
-							<div className="message-block">{this.state.status}</div>
+							<div className="message-block pd-20">{this.state.status}</div>
 						</Col>
 						<Col span={6} align="middle">
 							<div className="pd-20">
@@ -137,17 +143,19 @@ export default class Boggle extends Component {
 							>
 								It is a word
 							</Button>
+							<div>
+								<Spin size="large" spinning={this.state.isLoading} />
+							</div>
 						</Col>
 						<Col span={4}>
 							<div>Scores</div>
-							<Spin size="large" spinning={this.state.isLoading} />
-							<div>{this.state.score}</div>
+							<div className="score">{this.state.score}</div>
 						</Col>
 						<Col span={4}>
 							<Github user="sbimochan" repo="boggle"></Github>
 						</Col>
 					</Row>
-				</Layout>
+				</Layout.Content>
 			</Layout>
 		);
 	}
