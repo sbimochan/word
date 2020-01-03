@@ -16,18 +16,21 @@ import * as constants from 'src/constants';
 
 import 'antd/dist/antd.css';
 import 'src/App.css';
+
 export default class Boggle extends Component {
   state = {
-    isLoading: false,
-    score: 0,
-    validWords: [],
-    isCurrentWordValid: false,
-    currentWord: '',
-    randomLetters: [],
-    status: '',
-    isTimeUp: false,
-    isModalOpen: false
-  };
+      isLoading: false,
+      score: 0,
+      validWords: [],
+      isCurrentWordValid: false,
+      currentWord: '',
+      randomLetters: [],
+      status: '',
+      isTimeUp: false,
+      isModalOpen: false,
+      timerDuraion: 10,
+      isNewGame: false
+    }
 
   isLoading = isLoading => {
     this.setState({isLoading});
@@ -157,6 +160,23 @@ export default class Boggle extends Component {
       </div>
     );
   };
+
+  reset = () => {
+    this.setState({
+      isLoading: false,
+      score: 0,
+      validWords: [],
+      isCurrentWordValid: false,
+      currentWord: '',
+      randomLetters: [],
+      status: '',
+      isTimeUp: false,
+      isModalOpen: false,
+      timerDuraion: 10,
+      isNewGame: true
+    });
+    this.componentDidMount();
+  }
   componentDidMount() {
     this.generateLetters(constants.NUMBER_OF_FACES);
     document.addEventListener('keydown', this.doBackspace, false);
@@ -194,9 +214,12 @@ export default class Boggle extends Component {
               </div>
               <CountdownCircleTimer
                 isPlaying
-                durationSeconds={180}
+                durationSeconds={this.state.timerDuraion}
                 renderTime={this.renderTime}
-                onComplete={()=> this.endGame()}
+                onComplete={()=> {
+                  this.endGame();
+                  return [this.state.isNewGame,0]
+                  }}
                 colors={[
                 [
                   '#004777', .33
@@ -253,10 +276,11 @@ export default class Boggle extends Component {
           <Modal
           title="Game Over"
           visible={this.state.isModalOpen}
-          onOk={this.closeModal}
+          onOk={this.reset}
           onCancel={this.closeModal}
         >
           <p>Your score is <strong>{this.state.score}</strong></p>
+          <p>Do you wanna reset game?</p>
         </Modal>
         </Layout.Content>
       </Layout>
