@@ -28,7 +28,7 @@ export default class Boggle extends Component {
       status: '',
       isTimeUp: false,
       isModalOpen: false,
-      timerDuraion: 10,
+      timerDuraion: 180,
       isNewGame: false
     }
 
