@@ -1,8 +1,8 @@
 {
-  "name": "boggle",
+  "name": "word",
   "version": "1.0.0",
   "private": false,
-  "homepage": "https://sbimochan.github.io/boggle",
+  "homepage": "https://sbimochan.github.io/word",
   "author": "Bimochan Shrestha",
   "license": "MIT",
   "dependencies": {

@@ -1,10 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import * as serviceWorker from './serviceWorker';
-import Boggle from 'src/components/Boggle';
-import 'src/index.css';
+import React from "react";
+import ReactDOM from "react-dom";
+import * as serviceWorker from "./serviceWorker";
+import WordGame from "src/components/WordGame";
+import "src/index.css";
 
-ReactDOM.render(<Boggle />, document.getElementById('root'));
+ReactDOM.render(<WordGame />, document.getElementById("root"));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
