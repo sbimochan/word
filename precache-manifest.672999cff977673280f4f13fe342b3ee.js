@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "b751809118d66d6052c1eb853cbe14e3",
+    "revision": "0cff4bf8bbd1f8edb52286c883e5a3f9",
     "url": "/word/index.html"
   },
   {
-    "revision": "5726a3b5b55d4964135a",
+    "revision": "5669f904c4e4c0ee461b",
     "url": "/word/static/css/2.a2a264fc.chunk.css"
   },
   {
-    "revision": "7888a6c26d4516e27936",
+    "revision": "61025500e6d7c48bef43",
     "url": "/word/static/css/main.b98d40a8.chunk.css"
   },
   {
-    "revision": "5726a3b5b55d4964135a",
-    "url": "/word/static/js/2.5db6d01a.chunk.js"
+    "revision": "5669f904c4e4c0ee461b",
+    "url": "/word/static/js/2.c9f7401e.chunk.js"
   },
   {
     "revision": "744b76f766044157687ca8b61b891873",
-    "url": "/word/static/js/2.5db6d01a.chunk.js.LICENSE"
+    "url": "/word/static/js/2.c9f7401e.chunk.js.LICENSE"
   },
   {
-    "revision": "7888a6c26d4516e27936",
-    "url": "/word/static/js/main.9dc79918.chunk.js"
+    "revision": "61025500e6d7c48bef43",
+    "url": "/word/static/js/main.660b086b.chunk.js"
   },
   {
     "revision": "eddcf01a8f05c3c65aca",
