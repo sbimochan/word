@@ -192,8 +192,8 @@ export default class WordGame extends Component {
               <div className="message-block pd-20">{this.state.status}</div>
               <div className="valid-word-list pd-20">
                 <ul>
-                  {this.state.validWords.map((word) => (
-                    <li>{word}</li>
+                  {this.state.validWords.map((word, index) => (
+                    <li key={index}>{word}</li>
                   ))}
                 </ul>
               </div>
