@@ -32,6 +32,10 @@ export default class WordGame extends Component {
     if (this.state.isTimeUp) {
       return;
     }
+    if (this.state.currentWord.length <= 1) {
+      this.setState({ status: "Enter word more than 1 character" });
+      return;
+    }
     this.isLoading(true);
     try {
       const response = await checkDictionary(this.state.currentWord);
